@@ -1,0 +1,112 @@
+hello dosto kaise ho!
+
+get things like
+express
+mongoose(for data association chayiye bhai)
+bcrypt
+jsonwebtoken
+cookie-parser
+ejs
+
+
+we will also learn about securing the route in this project that is which page sould have access to everyone like login page and which page should not have access like the product page, before authentication(we will achieve this by using a middleware function).
+
+so first get the user model ready go to models folder and create user.js 
+as soon as creating require it in app.js
+
+now use that / route to render index.ejs file and then start working on that ejs file
+create a form for user registration and action to be set as /register and mwethod post now handle this route
+
+in register route:
+first before registering we should check whether the user is already registered if the user is already registered then dont allow them to re-register
+userModel.findOne({email}) checking the email already exists or not.
+if we get the user we will say that user already registered and ask them to login or instead of sending the message render the login page.
+
+after checking the condition if the user doesnt exist then we have to create a user using user model but we also have to make use of bcrypt to encrypt the password before saving and then use user model and create a user in your data base.
+and then we have to set toen using jwt because we are allowing the user after registering so token should be set in cookies
+register page is done now login page
+
+before login page:
+but i forgot to mention about post.js that is post model the field inside it are the user which is refering to the user model and then the date and also content and finally the no. of likes which also refering to the user model and finally export the model.
+
+login page: /login route
+first create a /login route for get and then render the login.ejas file to it and createa login.ejs file just with two parameters email and password now sart creating /login post route 
+in /login post route the only parameters you will be getting is email and password 
+
+and then see if the user doesnt exist, if the user doesnt exist then tell him that something went wrong user/password doesnt match if user mila then we have to see if the password maches for that we have function bcrypt.compare and then if in the result if it matches then give them the message that you have logged in but if it doesnt match the tedirect them back to login page until both the email and password matches...
+
+now to check the functionality of the login and register page create a logout route where you can visit to remove cookie 
+app.get("/logout",(req,res)=>{
+    res.cookie("token","");
+    res.redirect("/login")
+})
+so by removing the cookie from logout route if i register it should add cookie and also if i successfully login then also it should add the cookie thus we can conclude in both the routes cookies are being sent to the browser sucessfully!!!
+
+now what karna andre we have to make use of a function like a middleware for protected routes...
+ab ye siklenge!!!
+ isLoggedIn is the middleware function
+
+ in this function what we are doing is first we will check whether we have the cookie toke or not? then if it is not present then seedha muh me bol do ki nahi bhai waisa nahi karo first you have to login (for example while visiting a profile page)
+
+ or else if cookie ka token hai then we will have to verify whether the cookie that is milling matches with the cookie which should be milling and then let the user redirect or move forward
+
+ create a profile route and put the protect route middleware to it so that only the user who has registered or logged in should be able to access the profile page
+ 
+ 
+ function isLoggedIn(req,res,next){
+     if(req.cookies.token==="")
+        res.send("nahi bhai, aise kaise ho sakta hai! pehle login tho karo!")
+     else{
+      let data =  jwt.verify(req.cookies.token, "seretyuuyu");
+      req.user = data;
+      next();
+     }
+ }
+   
+   in this middleware where we are trying to use this to make the routes protected we are also putting the data obtained after verifying that it is a valid cookie into req.user why we are doing this ??
+
+   because if we make use of this middleware and get the access to profile page we might need the details of the user in the profile page for exqample we might want to show the mail id or the username obtained in our rendered page in our case it is the profle page so that is why after verifying the user we put that data into req.user to make use if necessary after getting the access to the protected route!
+
+   now in the profile page we have sentthereq.user with email so now wecan make use of this email and find the entire details of the respective email user
+   (remember we had sent the email ofthe user in middleware function.)  
+   with the email sent in the middleware function we can get the entire user details from the function userModel.findOne() from that we can pass the user while rendering the the profile page and make use of any paramters in the frontend part of the profile page
+
+
+now start with the ui designingandaslo thefrom that is reqired in creating the user post 
+two fields one is tittle and other is content field  
+so after creating your form then whatever the input we give should be taken inside those posts so how de wo achieve those now?
+
+go to form and take the input from form for that give a route to collect the input from the form 
+
+i did used a function called populate() what does that mean andrethe userwehave fetched wil have his posts which i stored in some array so when i populate those posts i get to access each and every post inside the array posts so that is why i used it 
+
+now coming to .enc 
+first install 
+then require in user,js and also in app.js and also say process.env.port to be 3000 in app.js then for security purpose remove all the secter key which were there in your project and put those in .env file and place .enve file inside gitignore so that your secret key wont be shared with everyone
+
+now i ahve edit option and like option which were not addressedso hum ab wo karenge
+
+go to that frontend page and give href a route
+make it a dynamic route which you can handle in the backend server file the dynamic ness is added through post._id
+
+
+now to upload dps we are making use of multer 
+so how do we do that we see here
+
+create a config folder and multerconfig.js file
+inside that we will be requiring the multer and then we will also set up disk Storage(destination,filename) and we will create a upload variable and export it from here to app.js file
+
+then go to multer npm documentation and copy the disk storage part and paste it in your multer config file and then change the path name in destination where you want to upload the file and then require two packages crypto and path which are required 
+
+in destination field i am just mentioning where should i keep my files the path thats it
+in filename field i have to make use of crypto to generate a 12 character random string and then it will return a string in the form of name and that name will be in buffer format which is to be converted to string in hexadecimal form and then attaching the extension but from where do we get the extension we extract it with the help of path which has a function called extname which gets the file extension name and  then + it to the hexidecimal string obtained from crypto and pass it to cb function which handles error and fn obtained (fn=string+extension) 
+
+put this all in some variable and then export it.
+now go back to app.js andthen requirer multerconfig file and then go to profile.ejs fiole and make changes in the frontend part.
+
+now after creating an dp div in profile.ejs file i also want some default if the user has not uploaded any so for that i download a picture and save it in uploads file.
+
+so to hold this user model must have another field called profilepic where we can add new pictures.... so create this field
+after creating that field make sure you name default with the default ong you want to show now go profile page wherever you had created the div fro containing the profile pic should have a image field and inside that <%=user.profilepic %> if you only do this much photo will not be shown because it is a stic file and you have to also mention the path so ?images/upload<%=user.profilepic %> if you write like this then you will be getting the image then overflow hiden rqako and the object cover everything you can do 
+
+now what if the user wants to upload his own dp for that we should be creating another route

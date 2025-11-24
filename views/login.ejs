@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div class="w-full h-screen bg-zinc-900 py-4">
+       <a class="mb-2  text-blue-500 text-s font-bold ml-15" href="/">go to register page</a>
+       <form class="text-white p-10" action="/login" method="post">
+           <h1 class=" px-5 text-3xl font-bold block mb-10">Login to your account</h1>
+
+          <input type="text" class="px-4 py-2 bg-zinc-900 border-2 border-zinc-700 rounded-md  ml-5 mb-3" placeholder="email" name="email">
+          <input type="text" class="px-4 py-2 bg-zinc-900 border-2 border-zinc-700 rounded-md  ml-5 mb-3" placeholder="password" name="password">
+
+           <br>
+           <input class="textarea outline-none ml-5 mt-5 rounded-md px-5 py-2 text-white bg-blue-500 " type="submit" value="Login">
+
+       </form>
+    </div>
+    
+</body>
+</html>

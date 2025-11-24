@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div class="w-full h-screen bg-zinc-900 py-4">
+       <a class="mb-2  text-blue-500 text-s font-bold ml-15" href="/">go to register page</a>
+       <form autocomplete="off" class="text-white p-10" action="/upload" method="post" enctype="multipart/form-data">
+           <h1 class=" px-5 text-3xl font-bold block mb-10">Upload your dp</h1>
+
+           <input class="px-4 py-2 text-black bg-white"  type="file" name="image">
+
+           <br>
+           <input class="textarea outline-none ml-5 mt-5 rounded-md px-5 py-2 text-white bg-blue-500 " type="submit" value="submit">
+
+       </form>
+    </div>
+    
+</body>
+</html>
